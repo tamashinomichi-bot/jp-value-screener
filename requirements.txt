@@ -3,4 +3,5 @@ pandas
 requests
 openpyxl
 xlrd
-streamlit
+streamlit==1.45.0
+altair>=5.0.0
