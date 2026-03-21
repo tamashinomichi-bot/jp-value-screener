@@ -3,253 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>作業日報</title>
+<title>作業証明書</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
-
   :root {
-    --bg: #f0f2f5;
-    --card: #ffffff;
-    --primary: #1a56db;
-    --primary-dark: #1e429f;
-    --accent: #f59e0b;
-    --text: #111827;
-    --text-sub: #6b7280;
-    --border: #e5e7eb;
-    --success: #10b981;
-    --radius: 12px;
-    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --bg: #f0f2f5; --card: #fff; --primary: #1a56db; --primary-dark: #1e429f;
+    --accent: #f59e0b; --text: #111827; --text-sub: #6b7280; --border: #e5e7eb;
+    --success: #10b981; --radius: 12px; --shadow: 0 2px 12px rgba(0,0,0,0.08);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Noto Sans JP', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding-bottom: 40px;
-  }
-
-  /* ヘッダー */
-  header {
-    background: var(--primary);
-    color: white;
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 8px rgba(26,86,219,0.3);
-  }
-  header .icon { font-size: 24px; }
-  header h1 { font-size: 18px; font-weight: 700; }
+  body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 40px; }
+  header { background: var(--primary); color: white; padding: 14px 20px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(26,86,219,0.3); }
+  header .icon { font-size: 22px; }
+  header h1 { font-size: 17px; font-weight: 700; }
   header .company { font-size: 11px; opacity: 0.8; margin-top: 2px; }
-
-  /* ステップ表示 */
-  .steps {
-    display: flex;
-    background: var(--primary-dark);
-    padding: 10px 20px;
-  }
-  .step {
-    flex: 1;
-    text-align: center;
-    color: rgba(255,255,255,0.5);
-    font-size: 11px;
-    font-weight: 500;
-    padding: 4px 0;
-    border-bottom: 2px solid transparent;
-    transition: all 0.3s;
-  }
-  .step.active {
-    color: white;
-    border-bottom-color: var(--accent);
-  }
-
-  /* メインコンテンツ */
-  main { padding: 16px; max-width: 600px; margin: 0 auto; }
-
-  /* カード */
-  .card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 20px;
-    margin-bottom: 12px;
-    box-shadow: var(--shadow);
-  }
-  .card-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* フォーム */
+  header .tel-info { margin-left: auto; text-align: right; font-size: 10px; opacity: 0.85; line-height: 1.5; }
+  .steps { display: flex; background: var(--primary-dark); padding: 8px 20px; }
+  .step { flex: 1; text-align: center; color: rgba(255,255,255,0.5); font-size: 11px; font-weight: 500; padding: 4px 0; border-bottom: 2px solid transparent; transition: all 0.3s; }
+  .step.active { color: white; border-bottom-color: var(--accent); }
+  main { padding: 14px; max-width: 600px; margin: 0 auto; }
+  .card { background: var(--card); border-radius: var(--radius); padding: 18px; margin-bottom: 12px; box-shadow: var(--shadow); }
+  .card-title { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 14px; display: flex; align-items: center; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
   .form-group { margin-bottom: 14px; }
-  label {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-sub);
-    margin-bottom: 6px;
+  label { display: block; font-size: 12px; font-weight: 600; color: var(--text-sub); margin-bottom: 6px; }
+  input[type=text], input[type=number], input[type=time], input[type=date], textarea, select {
+    width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 16px; font-family: 'Noto Sans JP', sans-serif; color: var(--text); background: white;
+    transition: border-color 0.2s; -webkit-appearance: none; appearance: none;
   }
-  input, textarea, select {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    font-size: 15px;
-    font-family: 'Noto Sans JP', sans-serif;
-    color: var(--text);
-    background: white;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-  input:focus, textarea:focus, select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
-  }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,86,219,0.1); }
   textarea { resize: vertical; min-height: 80px; }
-
   .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-  /* 天気選択 */
   .weather-group { display: flex; gap: 8px; flex-wrap: wrap; }
-  .weather-btn {
-    flex: 1;
-    min-width: 60px;
-    padding: 10px 6px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    background: white;
-    text-align: center;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
+  .weather-btn { flex: 1; min-width: 60px; padding: 10px 6px; border: 1.5px solid var(--border); border-radius: 8px; background: white; text-align: center; font-size: 13px; cursor: pointer; transition: all 0.2s; font-family: 'Noto Sans JP', sans-serif; }
   .weather-btn .emoji { display: block; font-size: 22px; margin-bottom: 2px; }
-  .weather-btn.selected {
-    border-color: var(--primary);
-    background: #eff6ff;
-    color: var(--primary);
-    font-weight: 600;
-  }
-
-  /* 署名エリア */
-  #signatureCanvas {
-    width: 100%;
-    height: 160px;
-    border: 2px dashed var(--border);
-    border-radius: 8px;
-    background: #fafafa;
-    touch-action: none;
-    cursor: crosshair;
-    display: block;
-  }
+  .weather-btn.selected { border-color: var(--primary); background: #eff6ff; color: var(--primary); font-weight: 600; }
+  .tag { display: inline-flex; align-items: center; gap: 4px; background: var(--primary); color: white; padding: 6px 12px; border-radius: 99px; font-size: 13px; font-weight: 600; }
+  .tag-x { cursor: pointer; font-size: 18px; line-height: 1; margin-left: 2px; }
+  .tags-area { display: flex; flex-wrap: wrap; gap: 6px; min-height: 20px; margin-top: 8px; }
+  #signatureCanvas { width: 100%; height: 160px; border: 2px dashed var(--border); border-radius: 8px; background: #fafafa; touch-action: none; cursor: crosshair; display: block; }
   #signatureCanvas.signed { border-color: var(--success); border-style: solid; }
-  .sig-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-  }
-  .sig-hint {
-    font-size: 12px;
-    color: var(--text-sub);
-    text-align: center;
-    margin-top: 6px;
-  }
-
-  /* ボタン */
-  .btn {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 700;
-    font-family: 'Noto Sans JP', sans-serif;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
+  .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .btn-primary { background: var(--primary); color: white; }
-  .btn-primary:active { background: var(--primary-dark); transform: scale(0.98); }
-  .btn-secondary {
-    background: white;
-    color: var(--text);
-    border: 1.5px solid var(--border);
-    font-size: 14px;
-    padding: 10px;
-  }
+  .btn-primary:active { background: var(--primary-dark); }
+  .btn-secondary { background: white; color: var(--text); border: 1.5px solid var(--border); font-size: 14px; padding: 10px; }
   .btn-success { background: var(--success); color: white; }
   .btn-accent { background: var(--accent); color: white; }
-
-  /* ページ切り替え */
   .page { display: none; }
   .page.active { display: block; }
-
-  /* 確認画面 */
-  .confirm-row {
-    display: flex;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 14px;
-  }
+  .confirm-row { display: flex; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
   .confirm-row:last-child { border-bottom: none; }
-  .confirm-label { color: var(--text-sub); width: 100px; flex-shrink: 0; font-size: 13px; }
+  .confirm-label { color: var(--text-sub); width: 110px; flex-shrink: 0; font-size: 13px; }
   .confirm-value { font-weight: 500; flex: 1; }
-
-  /* 完了画面 */
   .complete-icon { font-size: 64px; text-align: center; margin: 20px 0 10px; }
   .complete-title { text-align: center; font-size: 22px; font-weight: 700; margin-bottom: 8px; }
   .complete-sub { text-align: center; color: var(--text-sub); font-size: 14px; margin-bottom: 24px; }
-
-  /* バッジ */
-  .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 99px;
-    font-size: 11px;
-    font-weight: 600;
-    background: #eff6ff;
-    color: var(--primary);
-    margin-left: 8px;
-  }
-
-  .sig-preview {
-    width: 100%;
-    height: 80px;
-    object-fit: contain;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: white;
-  }
+  .sig-preview { width: 100%; height: 80px; object-fit: contain; border: 1px solid var(--border); border-radius: 8px; background: white; }
+  .other-input-row { display: none; gap: 8px; margin-top: 8px; }
+  .other-input-row input { flex: 1; }
+  .other-input-row button { padding: 10px 16px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 14px; font-family: 'Noto Sans JP', sans-serif; white-space: nowrap; cursor: pointer; }
+  .length-display { font-size: 24px; font-weight: 700; color: var(--primary); min-width: 60px; text-align: center; }
+  input[type=range] { flex: 1; height: 6px; accent-color: var(--primary); }
 </style>
 </head>
 <body>
 
 <header>
-  <span class="icon">🏗️</span>
+  <img src="data:image/jpeg;base64,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9Ctrskyd69DCYl0J86MakOdWPkH9k34a6l4Cs5I7/OSH6jHWvq7xbov9t2H2bbu68VrabpMGmriKtaliMTKrWdZ7jhBRjyn5QfGP9n/XtT8SRTWO5IhISQBxjmvd/gD8I5vCV9Hc3EfzZBJI9K+yr/Qba/lE0vUHNWbPSoLM5ir1Kma1J0fZMwVBKXMVfElobrR54I+rCvz88e/CTVdUvJHi3cvnpX6PyIJEKHoawJ/DtrOct3rgwmLdBto1qU+c4r4QaJNoPhZLKf7w29fYV2evaFaavBIk8QcspAz9K2rS1S0i8pOlWq4pVW6jmaKOlj83fin+z1rV3czaho6tCzZwVFfP1j4K+IfhbMN1fzenNfszd2qXcXlP0Nefap8NNI1R982Pyr6WhnEox5Kiujjlhle8T8sZ9G8faovkQahMD7Vu+F/2dPHuuajb6hf3Es0aNlsjqK/SW0+E+iWknmIBn6V6DpWkw6VF5UPTGK1qZy0rUkvuFHDfzHlXw5+HFp4Wtrcm3CTKBuOOSa9qAA6UtFfKVasqkuaR3RioqyIZ13wuvqpFfnd4++E+qan43bUot2057e9fosRkYrAn8PWk83nN1rswmKdGTa6mdSHOrHknwd8M3OgwhZ88KRzXvdULSwjsxiOr9cter7SbmXFWVjM1TT4L+0lhlQNvUivh/wCLH7PtzrazT6RCYpXzyo5r7zqOSMSDBrbD4upQlzQZM6amrM/F2b4T/EbwrMIkvpkVeoxWtBZeOtoiN/LkcV+q+reBtN1Zy8+Mn2rnF+EWhK5fAyfavp1nKkvfSv6HF9VfQ/Mmw+B3j/xLq0d5PdyyQnqCOOa+8Pg18Hk8HhJL2D5sZJI7171pXhay0pAkOMD2rp1GAB6V5eLzSpWjyLRG9Ogou5xXjPS/tehSWlsu3PpX5rfEz4K+IdVvvOtGdcPu4HvX6szwLOhRuhrnbjwvZ3By2PyrnwWOlh9UVVpKZ+X+m/Dn4g2VolvHezKF7Yq9/wAIJ8RP+f8Am/Kv0o/4Qyw9vyo/4Qyw9vyr1Hm7fRfcZfVvM/NgeBPiJn/j/m/Kvuz4KaZqumaB5WqytLJtHLV3f/CGWHt+VdHYWEVhH5cXSvPxWP8AbQ5LGlOlyO5fooorwjqCiiigAooooAKKKKACiiigD//Q/fyiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9H9/KKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/0v38ooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//Z" style="height:44px;width:auto;">
   <div>
-    <h1>作業日報</h1>
-    <div class="company">建設現場管理システム</div>
+    <h1>作業証明書</h1>
+    <div class="company">株式会社 元栄組</div>
+  </div>
+  <div class="tel-info">
+    <div>千葉県市原市五井金杉1-41-2</div>
+    <div>TEL: 0436-21-2311</div>
   </div>
 </header>
 
 <div class="steps">
-  <div class="step active" id="step1">① 日報入力</div>
+  <div class="step active" id="step1">① 入力</div>
   <div class="step" id="step2">② 確認</div>
   <div class="step" id="step3">③ 署名</div>
   <div class="step" id="step4">④ 完了</div>
@@ -257,216 +89,430 @@
 
 <main>
 
-  <!-- ページ1: 入力 -->
-  <div class="page active" id="page1">
+<!-- ページ1 -->
+<div class="page active" id="page1">
 
-    <div class="card">
-      <div class="card-title">📋 基本情報</div>
-
-      <div class="row-2">
-        <div class="form-group">
-          <label>日付 *</label>
-          <input type="date" id="date" required>
-        </div>
-        <div class="form-group">
-          <label>天気 *</label>
-          <div class="weather-group" id="weatherGroup">
-            <button class="weather-btn" onclick="selectWeather('晴れ',this)"><span class="emoji">☀️</span>晴れ</button>
-            <button class="weather-btn" onclick="selectWeather('曇り',this)"><span class="emoji">☁️</span>曇り</button>
-            <button class="weather-btn" onclick="selectWeather('雨',this)"><span class="emoji">🌧️</span>雨</button>
-            <button class="weather-btn" onclick="selectWeather('雪',this)"><span class="emoji">❄️</span>雪</button>
-          </div>
+  <div class="card">
+    <div class="card-title">📋 基本情報</div>
+    <div class="row-2">
+      <div class="form-group">
+        <label>日付 *</label>
+        <input type="date" id="date">
+      </div>
+      <div class="form-group">
+        <label>天気 *</label>
+        <div class="weather-group">
+          <button class="weather-btn" onclick="selWeather('晴れ',this)"><span class="emoji">☀️</span>晴れ</button>
+          <button class="weather-btn" onclick="selWeather('曇り',this)"><span class="emoji">☁️</span>曇り</button>
+          <button class="weather-btn" onclick="selWeather('雨',this)"><span class="emoji">🌧️</span>雨</button>
+          <button class="weather-btn" onclick="selWeather('雪',this)"><span class="emoji">❄️</span>雪</button>
         </div>
       </div>
-
-      <div class="form-group">
-        <label>作業員名 *</label>
-        <input type="text" id="workerName" placeholder="例：山田 太郎" required>
-      </div>
-
-      <div class="form-group">
-        <label>現場名 *</label>
-        <input type="text" id="siteName" placeholder="例：市原市姉崎町 〇〇工事" required>
+    </div>
+    <div class="form-group">
+      <label>職長名 *</label>
+      <select id="foreman" onchange="handleForeman(this)" style="font-size:16px;">
+        <option value="">-- 選択してください --</option>
+        <option>元栄洋一郎</option><option>川連南斗</option><option>重村正人</option>
+        <option>中村宏明</option><option>白井男也</option><option>白井大也</option>
+        <option>碇谷栄治路</option><option>佐藤賢一郎</option><option>早川和弘</option>
+        <option value="__other__">その他（手動入力）</option>
+      </select>
+      <input type="hidden" id="foremanName">
+      <div id="foremanOther" style="display:none;margin-top:8px;">
+        <input type="text" id="foremanOtherInput" placeholder="職長名を入力" oninput="document.getElementById('foremanName').value=this.value">
       </div>
     </div>
-
-    <div class="card">
-      <div class="card-title">⚒️ 作業内容</div>
-
-      <div class="form-group">
-        <label>作業内容 *</label>
-        <textarea id="workContent" placeholder="例：SP引き抜き 3本 L:1.75m 67本" required></textarea>
-      </div>
-
-      <div class="row-2">
-        <div class="form-group">
-          <label>開始時間 *</label>
-          <input type="time" id="startTime" required>
-        </div>
-        <div class="form-group">
-          <label>終了時間 *</label>
-          <input type="time" id="endTime" required>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>作業員数</label>
-        <input type="number" id="workerCount" placeholder="例：3" min="1" max="100">
-      </div>
-
-      <div class="form-group">
-        <label>使用機械・器具</label>
-        <input type="text" id="machinery" placeholder="例：キャタピラー25tクレーン">
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📝 備考</div>
-      <div class="form-group">
-        <textarea id="notes" placeholder="特記事項があれば入力してください" style="min-height:60px"></textarea>
-      </div>
-    </div>
-
-    <button class="btn btn-primary" onclick="goToConfirm()">
-      確認画面へ進む →
-    </button>
-  </div>
-
-  <!-- ページ2: 確認 -->
-  <div class="page" id="page2">
-    <div class="card">
-      <div class="card-title">📋 入力内容の確認</div>
-      <div id="confirmContent"></div>
-    </div>
-
-    <button class="btn btn-primary" onclick="goToSign()" style="margin-bottom:10px">
-      監督に署名をもらう ✍️
-    </button>
-    <button class="btn btn-secondary" onclick="goBack(1)">
-      ← 修正する
-    </button>
-  </div>
-
-  <!-- ページ3: 署名 -->
-  <div class="page" id="page3">
-    <div class="card">
-      <div class="card-title">✍️ 監督署名<span class="badge">監督の方へ</span></div>
-      <p style="font-size:13px;color:var(--text-sub);margin-bottom:12px;">
-        作業内容を確認の上、下の枠内に署名してください。
-      </p>
-      <canvas id="signatureCanvas"></canvas>
-      <div class="sig-hint">↑ 指またはペンで署名してください</div>
-      <div class="sig-actions">
-        <button class="btn btn-secondary" onclick="clearSignature()" style="flex:1">
-          クリア
-        </button>
-      </div>
-    </div>
-
-    <button class="btn btn-success" onclick="complete()" style="margin-bottom:10px">
-      ✅ 署名完了・日報を保存
-    </button>
-    <button class="btn btn-secondary" onclick="goBack(2)">
-      ← 戻る
-    </button>
-  </div>
-
-  <!-- ページ4: 完了 -->
-  <div class="page" id="page4">
-    <div class="card">
-      <div class="complete-icon">✅</div>
-      <div class="complete-title">日報が完成しました！</div>
-      <div class="complete-sub" id="completeSub"></div>
-
-      <div id="sigPreviewArea" style="margin-bottom:16px"></div>
-
-      <button class="btn btn-accent" onclick="downloadReport()" style="margin-bottom:10px">
-        📥 PDFで保存・共有
-      </button>
-      <button class="btn btn-primary" onclick="shareToLine()" style="margin-bottom:10px">
-        📤 LINEワークスで送信
-      </button>
-      <button class="btn btn-secondary" onclick="newReport()">
-        ＋ 新しい日報を作成
-      </button>
+    <div class="form-group">
+      <label>作業現場名 *</label>
+      <input type="text" id="siteName" placeholder="例：市原市姉崎町 〇〇工事">
     </div>
   </div>
+
+  <div class="card">
+    <div class="card-title">⚒️ 作業内容</div>
+
+    <div class="form-group">
+      <label>工法 *</label>
+      <div class="weather-group">
+        <button class="weather-btn" onclick="selMethod('単独圧入',this)">単独圧入</button>
+        <button class="weather-btn" onclick="selMethod('ジェット併用圧入',this)">ジェット<br>併用圧入</button>
+        <button class="weather-btn" onclick="selMethod('オーガ併用圧入',this)">オーガ<br>併用圧入</button>
+        <button class="weather-btn" onclick="selMethod('バイブロ打設',this)">バイブロ<br>打設</button>
+        <button class="weather-btn" onclick="selMethod('バイブロ引き抜き',this)">バイブロ<br>引き抜き</button>
+        <button class="weather-btn" onclick="selMethod('パイラー引き抜き',this)">パイラー<br>引き抜き</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>型 *</label>
+      <select id="typeSelect" onchange="handleType(this)" style="font-size:16px;">
+        <option value="">-- 選択してください --</option>
+        <option value="SP400">SP 400</option>
+        <option value="SP500">SP 500</option>
+        <option value="NSP600">NSP 600</option>
+        <option value="SPハット型">SP ハット型</option>
+        <option value="ZERO">ZERO</option>
+        <option value="その他">その他</option>
+      </select>
+    </div>
+
+    <div class="form-group" id="subTypeArea" style="display:none;">
+      <label id="subTypeLabel">規格</label>
+      <div class="weather-group" id="subTypeGroup"></div>
+    </div>
+
+    <div class="form-group">
+      <label>長さ L(m) *</label>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <input type="range" id="lengthSlider" min="2" max="100" value="20" step="1" oninput="updateLength()">
+        <span class="length-display" id="lengthVal">10.0</span>
+        <span style="font-size:14px;color:var(--text-sub);">m</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-sub);margin-top:4px;">
+        <span>1.0m</span><span>25.0m</span><span>50.0m</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>枚数・本数 *</label>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <input type="range" id="countSlider" min="1" max="200" value="1" step="1" oninput="updateCount()" style="flex:1;height:6px;accent-color:var(--primary);">
+        <span class="length-display" id="countVal">1</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-sub);margin-top:4px;">
+        <span>1</span><span>100</span><span>200</span>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:10px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:500;cursor:pointer;">
+          <input type="radio" name="countUnit" value="枚" onchange="updateWork()" checked style="width:18px;height:18px;accent-color:var(--primary);"> 枚
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:500;cursor:pointer;">
+          <input type="radio" name="countUnit" value="本" onchange="updateWork()" style="width:18px;height:18px;accent-color:var(--primary);"> 本
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>作業内容（自動生成）</label>
+      <div id="workPreview" style="background:#f0f4ff;border:1.5px solid var(--primary);border-radius:8px;padding:12px;font-size:15px;font-weight:600;color:var(--primary);min-height:48px;">
+        工法・型・長さを選択すると自動生成されます
+      </div>
+      <input type="hidden" id="workContent">
+    </div>
+
+    <div class="row-2">
+      <div class="form-group">
+        <label>開始時間 *</label>
+        <input type="time" id="startTime" value="08:00">
+      </div>
+      <div class="form-group">
+        <label>終了時間 *</label>
+        <input type="time" id="endTime" value="17:00">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>作業者名（複数選択可）</label>
+      <select id="workerSelect" onchange="addWorker(this)" style="font-size:16px;">
+        <option value="">-- タップして追加 --</option>
+        <option>アリ</option><option>ディオ</option><option>ディキ</option>
+        <option>ヌルハミド</option><option>ヌルロヒム</option><option>ロマダニ</option>
+        <option>ズキルマン</option><option>カリド</option><option>バフティアル</option>
+        <option>ワフユ</option><option>大上マサシ</option>
+        <option value="__other__">その他（手動入力）</option>
+      </select>
+      <div class="other-input-row" id="otherWorkerRow">
+        <input type="text" id="otherWorkerInput" placeholder="名前を入力">
+        <button onclick="addOtherWorker()">追加</button>
+      </div>
+      <div class="tags-area" id="workerTags"></div>
+      <input type="hidden" id="workerNames">
+    </div>
+
+    <div class="form-group">
+      <label>作業員数</label>
+      <input type="number" id="workerCount" placeholder="例：3" min="1" max="100" inputmode="numeric">
+    </div>
+
+    <div class="form-group">
+      <label>オペレーター名</label>
+      <select id="operator" onchange="handleOperator(this)" style="font-size:16px;">
+        <option value="">-- 選択してください --</option>
+        <option value="坂本">坂本</option>
+        <option value="丸">丸</option>
+        <option value="大上啓一">大上啓一</option>
+        <option value="佐川道夫">佐川道夫</option>
+        <option value="__other__">その他（手動入力）</option>
+      </select>
+      <input type="hidden" id="operatorName">
+      <div id="operatorOther" style="display:none;margin-top:8px;">
+        <input type="text" id="operatorOtherInput" placeholder="オペレーター名を入力" oninput="document.getElementById('operatorName').value=this.value">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>使用クレーン</label>
+      <select id="crane" onchange="handleCrane(this)" style="font-size:16px;">
+        <option value="">-- 選択してください --</option>
+        <option value="25tラフタクレーン">25tラフタクレーン</option>
+        <option value="35tラフタクレーン">35tラフタクレーン</option>
+        <option value="50tラフタクレーン">50tラフタクレーン</option>
+        <option value="50tテレスコクレーン">50tテレスコクレーン</option>
+        <option value="75tテレスコクレーン">75tテレスコクレーン</option>
+        <option value="70tクローラークレーン">70tクローラークレーン</option>
+        <option value="__other__">その他（手動入力）</option>
+      </select>
+      <input type="hidden" id="craneName">
+      <div id="craneOther" style="display:none;margin-top:8px;">
+        <input type="text" id="craneOtherInput" placeholder="クレーン名を入力" oninput="document.getElementById('craneName').value=this.value">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📝 備考</div>
+    <div class="form-group">
+      <textarea id="notes" placeholder="特記事項があれば入力してください" style="min-height:60px;"></textarea>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" onclick="goConfirm()">確認画面へ進む →</button>
+</div>
+
+<!-- ページ2 -->
+<div class="page" id="page2">
+  <div class="card">
+    <div class="card-title">📋 入力内容の確認</div>
+    <div id="confirmContent"></div>
+  </div>
+  <button class="btn btn-primary" onclick="goSign()" style="margin-bottom:10px;">監督に署名をもらう ✍️</button>
+  <button class="btn btn-secondary" onclick="showPage(1)">← 修正する</button>
+</div>
+
+<!-- ページ3 -->
+<div class="page" id="page3">
+  <div class="card">
+    <div class="card-title">✍️ 監督署名</div>
+    <p style="font-size:13px;color:var(--text-sub);margin-bottom:12px;">作業内容を確認の上、下の枠内に署名してください。</p>
+    <canvas id="signatureCanvas"></canvas>
+    <p style="font-size:12px;color:var(--text-sub);text-align:center;margin-top:6px;">↑ 指で署名してください</p>
+    <button class="btn btn-secondary" onclick="clearSig()" style="margin-top:8px;">クリア</button>
+  </div>
+  <button class="btn btn-success" onclick="complete()" style="margin-bottom:10px;">✅ 署名完了・保存</button>
+  <button class="btn btn-secondary" onclick="showPage(2)">← 戻る</button>
+</div>
+
+<!-- ページ4 -->
+<div class="page" id="page4">
+  <div class="card">
+    <div class="complete-icon">✅</div>
+    <div class="complete-title">作業証明書が完成しました！</div>
+    <div class="complete-sub" id="completeSub"></div>
+    <div id="sigPreviewArea" style="margin-bottom:16px;"></div>
+    <button class="btn btn-accent" onclick="downloadReport()" style="margin-bottom:10px;">📥 PDFで保存・共有</button>
+    <button class="btn btn-primary" onclick="shareToLine()" style="margin-bottom:10px;">📤 LINEワークスで送信</button>
+    <button class="btn btn-secondary" onclick="newReport()">＋ 新しい証明書を作成</button>
+  </div>
+</div>
 
 </main>
 
 <script>
+// --- 状態管理 ---
 let weather = '';
-let signatureData = '';
+let workMethod = '';
+let workSubType = '';
+let workerList = [];
+let sigData = '';
 let reportData = {};
 
-// 今日の日付をデフォルト設定
+const subTypes = {
+  'SP400': ['2型','3型','4型'],
+  'SP500': ['5L','6L'],
+  'NSP600': ['2W','3W','4W'],
+  'SPハット型': ['10H','25H','45H','50H'],
+  'ZERO': [],
+  'その他': ['H鋼300','H鋼400']
+};
+
+// --- 初期化 ---
 document.getElementById('date').value = new Date().toISOString().split('T')[0];
 
-function selectWeather(w, btn) {
+// --- 天気 ---
+function selWeather(w, btn) {
   weather = w;
   document.querySelectorAll('.weather-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
 }
 
-function goToConfirm() {
-  const required = ['date','workerName','siteName','workContent','startTime','endTime'];
-  for (let id of required) {
-    if (!document.getElementById(id).value) {
-      alert('必須項目を入力してください');
-      document.getElementById(id).focus();
-      return;
-    }
+// --- 工法 ---
+function selMethod(m, btn) {
+  workMethod = m;
+  document.querySelectorAll('#page1 .card:nth-child(2) .weather-group:first-of-type .weather-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  updateWork();
+}
+
+// --- 職長 ---
+function handleForeman(sel) {
+  if (sel.value === '__other__') {
+    document.getElementById('foremanOther').style.display = 'block';
+    document.getElementById('foremanName').value = '';
+  } else {
+    document.getElementById('foremanOther').style.display = 'none';
+    document.getElementById('foremanName').value = sel.value;
   }
+}
+
+// --- 型選択 ---
+function handleType(sel) {
+  const t = sel.value;
+  workSubType = '';
+  const subs = subTypes[t] || [];
+  const area = document.getElementById('subTypeArea');
+  const group = document.getElementById('subTypeGroup');
+  if (subs.length > 0) {
+    area.style.display = 'block';
+    document.getElementById('subTypeLabel').textContent = t + ' 規格';
+    group.innerHTML = subs.map(s =>
+      `<button class="weather-btn" onclick="selSub('${s}',this)">${s}</button>`
+    ).join('');
+  } else {
+    area.style.display = 'none';
+    updateWork();
+  }
+}
+
+function selSub(s, btn) {
+  workSubType = s;
+  document.querySelectorAll('#subTypeGroup .weather-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  updateWork();
+}
+
+// --- 長さ ---
+function updateLength() {
+  const v = (document.getElementById('lengthSlider').value / 2).toFixed(1);
+  document.getElementById('lengthVal').textContent = v;
+  updateWork();
+}
+
+// --- 作業内容自動生成 ---
+function updateCount() {
+  document.getElementById('countVal').textContent = document.getElementById('countSlider').value;
+  updateWork();
+}
+
+function updateWork() {
+  const t = document.getElementById('typeSelect').value;
+  const len = (document.getElementById('lengthSlider').value / 2).toFixed(1);
+  const count = document.getElementById('countSlider').value;
+  const unitEl = document.querySelector('input[name="countUnit"]:checked');
+  const unit = unitEl ? unitEl.value : '枚';
+  let parts = [];
+  if (workMethod) parts.push(workMethod);
+  if (t) {
+    let ts = t;
+    if (workSubType) ts += ' ' + workSubType;
+    parts.push(ts);
+  }
+  parts.push('L=' + len + 'm');
+  parts.push(count + unit);
+  const text = parts.join(' / ');
+  document.getElementById('workPreview').textContent = text || '工法・型・長さを選択すると自動生成されます';
+  document.getElementById('workContent').value = text;
+}
+
+// --- 作業者 ---
+function addWorker(sel) {
+  const val = sel.value;
+  sel.value = '';
+  if (!val) return;
+  if (val === '__other__') {
+    document.getElementById('otherWorkerRow').style.display = 'flex';
+    return;
+  }
+  if (!workerList.includes(val)) {
+    workerList.push(val);
+    renderTags();
+  }
+}
+
+function addOtherWorker() {
+  const input = document.getElementById('otherWorkerInput');
+  const val = input.value.trim();
+  if (val && !workerList.includes(val)) {
+    workerList.push(val);
+    renderTags();
+    input.value = '';
+    document.getElementById('otherWorkerRow').style.display = 'none';
+  }
+}
+
+function removeWorker(name) {
+  workerList = workerList.filter(n => n !== name);
+  renderTags();
+}
+
+function renderTags() {
+  const area = document.getElementById('workerTags');
+  area.innerHTML = workerList.map(name =>
+    '<span class="tag">' + name +
+    '<span class="tag-x" onclick="removeWorker(\'' + name + '\')">×</span></span>'
+  ).join('');
+  document.getElementById('workerNames').value = workerList.join('、');
+}
+
+// --- 確認画面 ---
+function goConfirm() {
+  if (!document.getElementById('date').value) { alert('日付を入力してください'); return; }
   if (!weather) { alert('天気を選択してください'); return; }
+  const fn = document.getElementById('foremanName').value;
+  if (!fn) { alert('職長名を選択してください'); return; }
+  if (!document.getElementById('siteName').value) { alert('作業現場名を入力してください'); return; }
+  if (!document.getElementById('startTime').value) { alert('開始時間を入力してください'); return; }
+  if (!document.getElementById('endTime').value) { alert('終了時間を入力してください'); return; }
 
   reportData = {
     date: document.getElementById('date').value,
     weather,
-    workerName: document.getElementById('workerName').value,
+    foremanName: fn,
     siteName: document.getElementById('siteName').value,
-    workContent: document.getElementById('workContent').value,
+    workContent: document.getElementById('workContent').value || '（未選択）',
     startTime: document.getElementById('startTime').value,
     endTime: document.getElementById('endTime').value,
+    workerNames: document.getElementById('workerNames').value || '—',
     workerCount: document.getElementById('workerCount').value || '—',
-    machinery: document.getElementById('machinery').value || '—',
+    operator: document.getElementById('operatorName').value || document.getElementById('operator').value || '—',
+    crane: document.getElementById('craneName').value || document.getElementById('crane').value || '—',
     notes: document.getElementById('notes').value || '—',
   };
 
-  const html = `
-    <div class="confirm-row"><span class="confirm-label">日付</span><span class="confirm-value">${reportData.date}</span></div>
-    <div class="confirm-row"><span class="confirm-label">天気</span><span class="confirm-value">${reportData.weather}</span></div>
-    <div class="confirm-row"><span class="confirm-label">作業員名</span><span class="confirm-value">${reportData.workerName}</span></div>
-    <div class="confirm-row"><span class="confirm-label">現場名</span><span class="confirm-value">${reportData.siteName}</span></div>
-    <div class="confirm-row"><span class="confirm-label">作業内容</span><span class="confirm-value">${reportData.workContent}</span></div>
-    <div class="confirm-row"><span class="confirm-label">作業時間</span><span class="confirm-value">${reportData.startTime} 〜 ${reportData.endTime}</span></div>
-    <div class="confirm-row"><span class="confirm-label">作業員数</span><span class="confirm-value">${reportData.workerCount}名</span></div>
-    <div class="confirm-row"><span class="confirm-label">使用機械</span><span class="confirm-value">${reportData.machinery}</span></div>
-    <div class="confirm-row"><span class="confirm-label">備考</span><span class="confirm-value">${reportData.notes}</span></div>
-  `;
-  document.getElementById('confirmContent').innerHTML = html;
+  document.getElementById('confirmContent').innerHTML = [
+    ['日付', reportData.date],
+    ['天気', reportData.weather],
+    ['職長名', reportData.foremanName],
+    ['作業現場名', reportData.siteName],
+    ['作業内容', reportData.workContent],
+    ['作業時間', reportData.startTime + ' 〜 ' + reportData.endTime],
+    ['作業者名', reportData.workerNames],
+    ['作業員数', reportData.workerCount + '名'],
+    ['オペレーター', reportData.operator],
+    ['使用クレーン', reportData.crane],
+    ['備考', reportData.notes],
+  ].map(([l,v]) =>
+    '<div class="confirm-row"><span class="confirm-label">' + l + '</span><span class="confirm-value">' + v + '</span></div>'
+  ).join('');
+
   showPage(2);
 }
 
-function goToSign() {
-  showPage(3);
-  initSignature();
-}
-
-function goBack(page) { showPage(page); }
-
-function showPage(n) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page' + n).classList.add('active');
-  document.querySelectorAll('.step').forEach((s,i) => {
-    s.classList.toggle('active', i < n);
-  });
-  window.scrollTo(0,0);
-}
-
-// 署名機能
+// --- 署名 ---
 let canvas, ctx, drawing = false;
 
-function initSignature() {
+function goSign() {
+  showPage(3);
   canvas = document.getElementById('signatureCanvas');
   ctx = canvas.getContext('2d');
   canvas.width = canvas.offsetWidth;
@@ -476,135 +522,136 @@ function initSignature() {
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
 
-  canvas.addEventListener('touchstart', startDraw, {passive:false});
-  canvas.addEventListener('touchmove', draw, {passive:false});
-  canvas.addEventListener('touchend', stopDraw);
-  canvas.addEventListener('mousedown', startDrawMouse);
-  canvas.addEventListener('mousemove', drawMouse);
-  canvas.addEventListener('mouseup', stopDraw);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }, {passive:false});
+  canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); canvas.classList.add('signed'); }, {passive:false});
+  canvas.addEventListener('touchend', () => drawing = false);
+  canvas.addEventListener('mousedown', e => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+  canvas.addEventListener('mousemove', e => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); canvas.classList.add('signed'); });
+  canvas.addEventListener('mouseup', () => drawing = false);
 }
 
-function getPos(e, canvas) {
+function getPos(e) {
   const rect = canvas.getBoundingClientRect();
-  const scaleX = canvas.width / rect.width;
-  if (e.touches) {
-    return {
-      x: (e.touches[0].clientX - rect.left) * scaleX,
-      y: (e.touches[0].clientY - rect.top) * scaleX
-    };
-  }
-  return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleX };
+  const scale = canvas.width / rect.width;
+  if (e.touches) return { x: (e.touches[0].clientX - rect.left) * scale, y: (e.touches[0].clientY - rect.top) * scale };
+  return { x: (e.clientX - rect.left) * scale, y: (e.clientY - rect.top) * scale };
 }
 
-function startDraw(e) {
-  e.preventDefault();
-  drawing = true;
-  const pos = getPos(e, canvas);
-  ctx.beginPath();
-  ctx.moveTo(pos.x, pos.y);
-}
-function draw(e) {
-  e.preventDefault();
-  if (!drawing) return;
-  const pos = getPos(e, canvas);
-  ctx.lineTo(pos.x, pos.y);
-  ctx.stroke();
-  canvas.classList.add('signed');
-}
-function stopDraw() { drawing = false; }
-function startDrawMouse(e) { drawing = true; const pos = getPos(e, canvas); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); }
-function drawMouse(e) { if (!drawing) return; const pos = getPos(e, canvas); ctx.lineTo(pos.x, pos.y); ctx.stroke(); canvas.classList.add('signed'); }
-
-function clearSignature() {
+function clearSig() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   canvas.classList.remove('signed');
 }
 
 function complete() {
-  signatureData = canvas.toDataURL('image/png');
-  const isEmpty = !canvas.classList.contains('signed');
-  if (isEmpty && !confirm('署名がありません。このまま完了しますか？')) return;
-
-  document.getElementById('completeSub').textContent =
-    `${reportData.date} / ${reportData.siteName} / ${reportData.workerName}`;
-
-  if (signatureData && canvas.classList.contains('signed')) {
+  sigData = canvas.toDataURL('image/png');
+  document.getElementById('completeSub').textContent = reportData.date + ' / ' + reportData.siteName + ' / ' + reportData.foremanName;
+  if (canvas.classList.contains('signed')) {
     document.getElementById('sigPreviewArea').innerHTML =
-      `<p style="font-size:12px;color:var(--text-sub);margin-bottom:4px;">監督署名：</p>
-       <img src="${signatureData}" class="sig-preview">`;
+      '<p style="font-size:12px;color:var(--text-sub);margin-bottom:4px;">監督署名：</p><img src="' + sigData + '" class="sig-preview">';
   }
-
   showPage(4);
 }
 
+// --- PDF保存 ---
 function downloadReport() {
   const d = reportData;
-  const sigHtml = signatureData && canvas.classList.contains('signed')
-    ? `<img src="${signatureData}" style="width:200px;height:60px;object-fit:contain;border:1px solid #ccc;border-radius:4px;">`
+  const sigHtml = sigData && canvas.classList.contains('signed')
+    ? '<img src="' + sigData + '" style="width:200px;height:60px;object-fit:contain;border:1px solid #ccc;border-radius:4px;">'
     : '<span style="color:#999">（署名なし）</span>';
-
-  const html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8">
-  <style>
-    body{font-family:'Noto Sans JP',sans-serif;padding:30px;max-width:700px;margin:0 auto;color:#111;}
-    h1{font-size:22px;text-align:center;border-bottom:2px solid #1a56db;padding-bottom:10px;margin-bottom:20px;color:#1a56db;}
-    table{width:100%;border-collapse:collapse;margin-bottom:20px;}
-    td{padding:10px 12px;border:1px solid #ddd;font-size:14px;}
-    td:first-child{background:#f0f4ff;font-weight:600;width:130px;color:#1a56db;}
-    .sig-area{border:1px solid #ddd;padding:16px;border-radius:8px;margin-top:20px;}
-    .sig-title{font-size:13px;color:#666;margin-bottom:8px;}
-    .footer{text-align:center;margin-top:30px;font-size:11px;color:#999;}
-  </style></head><body>
-  <h1>🏗️ 作業日報</h1>
-  <table>
-    <tr><td>日付</td><td>${d.date}</td></tr>
-    <tr><td>天気</td><td>${d.weather}</td></tr>
-    <tr><td>作業員名</td><td>${d.workerName}</td></tr>
-    <tr><td>現場名</td><td>${d.siteName}</td></tr>
-    <tr><td>作業内容</td><td>${d.workContent}</td></tr>
-    <tr><td>作業時間</td><td>${d.startTime} 〜 ${d.endTime}</td></tr>
-    <tr><td>作業員数</td><td>${d.workerCount}名</td></tr>
-    <tr><td>使用機械</td><td>${d.machinery}</td></tr>
-    <tr><td>備考</td><td>${d.notes}</td></tr>
-  </table>
-  <div class="sig-area">
-    <div class="sig-title">監督署名：</div>
-    ${sigHtml}
-  </div>
-  <div class="footer">建設現場管理システム / 出力日時：${new Date().toLocaleString('ja-JP')}</div>
-  </body></html>`;
-
+  const html = '<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><style>body{font-family:sans-serif;padding:30px;max-width:700px;margin:0 auto;}h1{font-size:20px;text-align:center;border-bottom:2px solid #1a56db;padding-bottom:10px;margin-bottom:20px;color:#1a56db;}table{width:100%;border-collapse:collapse;margin-bottom:20px;}td{padding:10px 12px;border:1px solid #ddd;font-size:14px;}td:first-child{background:#f0f4ff;font-weight:600;width:130px;color:#1a56db;}.sig{border:1px solid #ddd;padding:16px;border-radius:8px;}.footer{text-align:center;margin-top:30px;font-size:11px;color:#999;}</style></head><body>'
+    + '<h1>🏗️ 作業証明書</h1><table>'
+    + '<tr><td>日付</td><td>' + d.date + '</td></tr>'
+    + '<tr><td>天気</td><td>' + d.weather + '</td></tr>'
+    + '<tr><td>職長名</td><td>' + d.foremanName + '</td></tr>'
+    + '<tr><td>作業現場名</td><td>' + d.siteName + '</td></tr>'
+    + '<tr><td>作業内容</td><td>' + d.workContent + '</td></tr>'
+    + '<tr><td>作業時間</td><td>' + d.startTime + ' 〜 ' + d.endTime + '</td></tr>'
+    + '<tr><td>作業者名</td><td>' + d.workerNames + '</td></tr>'
+    + '<tr><td>作業員数</td><td>' + d.workerCount + '名</td></tr>'
+    + '<tr><td>オペレーター</td><td>' + d.operator + '</td></tr>'
+    + '<tr><td>使用クレーン</td><td>' + d.crane + '</td></tr>'
+    + '<tr><td>備考</td><td>' + d.notes + '</td></tr>'
+    + '</table><div class="sig"><p style="font-size:13px;color:#666;margin-bottom:8px;">監督署名：</p>' + sigHtml + '</div>'
+    + '<div class="footer">株式会社 元栄組 | 千葉県市原市五井金杉1-41-2 | TEL:0436-21-2311 / ' + new Date().toLocaleString('ja-JP') + '</div>'
+    + '</body></html>';
   const blob = new Blob([html], {type:'text/html;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url;
-  a.download = `日報_${d.date}_${d.workerName}.html`;
+  a.href = URL.createObjectURL(blob);
+  a.download = '作業証明書_' + d.date + '_' + d.foremanName + '.html';
   a.click();
-  URL.revokeObjectURL(url);
-
-  setTimeout(() => alert('ダウンロードしました！\nブラウザの印刷機能でPDF保存できます。'), 500);
+  setTimeout(() => alert('ダウンロードしました！\nブラウザの印刷からPDF保存できます。'), 500);
 }
 
 function shareToLine() {
   const d = reportData;
-  const text = `【作業日報】\n日付：${d.date}\n現場：${d.siteName}\n作業員：${d.workerName}\n作業内容：${d.workContent}\n時間：${d.startTime}〜${d.endTime}\n天気：${d.weather}`;
-  const url = `https://line.me/R/share?text=${encodeURIComponent(text)}`;
-  window.open(url, '_blank');
+  const text = '【作業証明書】\n日付：' + d.date + '\n現場：' + d.siteName + '\n職長：' + d.foremanName + '\n作業内容：' + d.workContent + '\n時間：' + d.startTime + '〜' + d.endTime + '\n天気：' + d.weather;
+  window.open('https://line.me/R/share?text=' + encodeURIComponent(text), '_blank');
 }
 
 function newReport() {
-  document.getElementById('workerName').value = '';
-  document.getElementById('siteName').value = '';
-  document.getElementById('workContent').value = '';
-  document.getElementById('startTime').value = '';
-  document.getElementById('endTime').value = '';
-  document.getElementById('workerCount').value = '';
-  document.getElementById('machinery').value = '';
-  document.getElementById('notes').value = '';
+  weather = ''; workMethod = ''; workSubType = ''; workerList = []; sigData = ''; reportData = {};
   document.getElementById('date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('foreman').value = '';
+  document.getElementById('foremanName').value = '';
+  document.getElementById('foremanOther').style.display = 'none';
+  document.getElementById('foremanOtherInput').value = '';
+  document.getElementById('siteName').value = '';
+  document.getElementById('typeSelect').value = '';
+  document.getElementById('subTypeArea').style.display = 'none';
+  document.getElementById('lengthSlider').value = 20;
+  document.getElementById('lengthVal').textContent = '10.0';
+  document.getElementById('workPreview').textContent = '工法・型・長さを選択すると自動生成されます';
+  document.getElementById('workContent').value = '';
+  document.getElementById('countSlider').value = 1;
+  document.getElementById('countVal').textContent = '1';
+  const firstUnit = document.querySelector('input[name="countUnit"]');
+  if (firstUnit) firstUnit.checked = true;
+  document.getElementById('startTime').value = '08:00';
+  document.getElementById('endTime').value = '17:00';
+  document.getElementById('workerSelect').value = '';
+  document.getElementById('workerTags').innerHTML = '';
+  document.getElementById('workerNames').value = '';
+  document.getElementById('otherWorkerRow').style.display = 'none';
+  document.getElementById('otherWorkerInput').value = '';
+  document.getElementById('workerCount').value = '';
+  document.getElementById('operator').value = '';
+  document.getElementById('operatorName').value = '';
+  document.getElementById('operatorOther').style.display = 'none';
+  document.getElementById('operatorOtherInput').value = '';
+  document.getElementById('crane').value = '';
+  document.getElementById('craneName').value = '';
+  document.getElementById('craneOther').style.display = 'none';
+  document.getElementById('craneOtherInput').value = '';
+  document.getElementById('notes').value = '';
   document.querySelectorAll('.weather-btn').forEach(b => b.classList.remove('selected'));
-  weather = '';
-  document.getElementById('sigPreviewArea').innerHTML = '';
   showPage(1);
+}
+
+function handleCrane(sel) {
+  if (sel.value === '__other__') {
+    document.getElementById('craneOther').style.display = 'block';
+    document.getElementById('craneName').value = '';
+  } else {
+    document.getElementById('craneOther').style.display = 'none';
+    document.getElementById('craneName').value = sel.value;
+  }
+}
+
+function handleOperator(sel) {
+  if (sel.value === '__other__') {
+    document.getElementById('operatorOther').style.display = 'block';
+    document.getElementById('operatorName').value = '';
+  } else {
+    document.getElementById('operatorOther').style.display = 'none';
+    document.getElementById('operatorName').value = sel.value;
+  }
+}
+
+function showPage(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page' + n).classList.add('active');
+  document.querySelectorAll('.step').forEach((s,i) => s.classList.toggle('active', i < n));
+  window.scrollTo(0, 0);
 }
 </script>
 </body>
