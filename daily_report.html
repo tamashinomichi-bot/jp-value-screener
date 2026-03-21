@@ -3,609 +3,348 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>作業日報</title>
+<title>作業証明書</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
-
-  :root {
-    --bg: #f0f2f5;
-    --card: #ffffff;
-    --primary: #1a56db;
-    --primary-dark: #1e429f;
-    --accent: #f59e0b;
-    --text: #111827;
-    --text-sub: #6b7280;
-    --border: #e5e7eb;
-    --success: #10b981;
-    --radius: 12px;
-    --shadow: 0 2px 12px rgba(0,0,0,0.08);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Noto Sans JP', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding-bottom: 40px;
-  }
-
-  /* ヘッダー */
-  header {
-    background: var(--primary);
-    color: white;
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 8px rgba(26,86,219,0.3);
-  }
-  header .icon { font-size: 24px; }
-  header h1 { font-size: 18px; font-weight: 700; }
-  header .company { font-size: 11px; opacity: 0.8; margin-top: 2px; }
-
-  /* ステップ表示 */
-  .steps {
-    display: flex;
-    background: var(--primary-dark);
-    padding: 10px 20px;
-  }
-  .step {
-    flex: 1;
-    text-align: center;
-    color: rgba(255,255,255,0.5);
-    font-size: 11px;
-    font-weight: 500;
-    padding: 4px 0;
-    border-bottom: 2px solid transparent;
-    transition: all 0.3s;
-  }
-  .step.active {
-    color: white;
-    border-bottom-color: var(--accent);
-  }
-
-  /* メインコンテンツ */
-  main { padding: 16px; max-width: 600px; margin: 0 auto; }
-
-  /* カード */
-  .card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 20px;
-    margin-bottom: 12px;
-    box-shadow: var(--shadow);
-  }
-  .card-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* フォーム */
-  .form-group { margin-bottom: 14px; }
-  label {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-sub);
-    margin-bottom: 6px;
-  }
-  input, textarea, select {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    font-size: 15px;
-    font-family: 'Noto Sans JP', sans-serif;
-    color: var(--text);
-    background: white;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-  input:focus, textarea:focus, select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
-  }
-  textarea { resize: vertical; min-height: 80px; }
-
-  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-  /* 天気選択 */
-  .weather-group { display: flex; gap: 8px; flex-wrap: wrap; }
-  .weather-btn {
-    flex: 1;
-    min-width: 60px;
-    padding: 10px 6px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    background: white;
-    text-align: center;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .weather-btn .emoji { display: block; font-size: 22px; margin-bottom: 2px; }
-  .weather-btn.selected {
-    border-color: var(--primary);
-    background: #eff6ff;
-    color: var(--primary);
-    font-weight: 600;
-  }
-
-  /* 署名エリア */
-  #signatureCanvas {
-    width: 100%;
-    height: 160px;
-    border: 2px dashed var(--border);
-    border-radius: 8px;
-    background: #fafafa;
-    touch-action: none;
-    cursor: crosshair;
-    display: block;
-  }
-  #signatureCanvas.signed { border-color: var(--success); border-style: solid; }
-  .sig-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 8px;
-  }
-  .sig-hint {
-    font-size: 12px;
-    color: var(--text-sub);
-    text-align: center;
-    margin-top: 6px;
-  }
-
-  /* ボタン */
-  .btn {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 700;
-    font-family: 'Noto Sans JP', sans-serif;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .btn-primary { background: var(--primary); color: white; }
-  .btn-primary:active { background: var(--primary-dark); transform: scale(0.98); }
-  .btn-secondary {
-    background: white;
-    color: var(--text);
-    border: 1.5px solid var(--border);
-    font-size: 14px;
-    padding: 10px;
-  }
-  .btn-success { background: var(--success); color: white; }
-  .btn-accent { background: var(--accent); color: white; }
-
-  /* ページ切り替え */
-  .page { display: none; }
-  .page.active { display: block; }
-
-  /* 確認画面 */
-  .confirm-row {
-    display: flex;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 14px;
-  }
-  .confirm-row:last-child { border-bottom: none; }
-  .confirm-label { color: var(--text-sub); width: 100px; flex-shrink: 0; font-size: 13px; }
-  .confirm-value { font-weight: 500; flex: 1; }
-
-  /* 完了画面 */
-  .complete-icon { font-size: 64px; text-align: center; margin: 20px 0 10px; }
-  .complete-title { text-align: center; font-size: 22px; font-weight: 700; margin-bottom: 8px; }
-  .complete-sub { text-align: center; color: var(--text-sub); font-size: 14px; margin-bottom: 24px; }
-
-  /* バッジ */
-  .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 99px;
-    font-size: 11px;
-    font-weight: 600;
-    background: #eff6ff;
-    color: var(--primary);
-    margin-left: 8px;
-  }
-
-  .sig-preview {
-    width: 100%;
-    height: 80px;
-    object-fit: contain;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: white;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+:root{--bg:#f0f2f5;--card:#fff;--primary:#1a56db;--primary-dark:#1e429f;--accent:#f59e0b;--text:#111827;--text-sub:#6b7280;--border:#e5e7eb;--success:#10b981;--radius:12px;--shadow:0 2px 12px rgba(0,0,0,0.08);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:40px;}
+header{background:var(--primary);color:white;padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(26,86,219,0.3);}
+header h1{font-size:17px;font-weight:700;}
+header .company{font-size:11px;opacity:0.8;margin-top:2px;}
+header .tel-info{margin-left:auto;text-align:right;font-size:10px;opacity:0.85;line-height:1.5;}
+.steps{display:flex;background:var(--primary-dark);padding:8px 20px;}
+.step{flex:1;text-align:center;color:rgba(255,255,255,0.5);font-size:11px;font-weight:500;padding:4px 0;border-bottom:2px solid transparent;transition:all 0.3s;}
+.step.active{color:white;border-bottom-color:var(--accent);}
+main{padding:14px;max-width:600px;margin:0 auto;}
+.card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:var(--shadow);}
+.card-title{font-size:13px;font-weight:700;color:var(--primary);margin-bottom:14px;display:flex;align-items:center;gap:6px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.form-group{margin-bottom:14px;}
+label{display:block;font-size:12px;font-weight:600;color:var(--text-sub);margin-bottom:6px;}
+input[type=text],input[type=number],input[type=time],input[type=date],textarea,select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:16px;font-family:'Noto Sans JP',sans-serif;color:var(--text);background:white;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,86,219,0.1);}
+textarea{resize:vertical;min-height:80px;}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.weather-group{display:flex;gap:8px;flex-wrap:wrap;}
+.weather-btn{flex:1;min-width:60px;padding:10px 6px;border:1.5px solid var(--border);border-radius:8px;background:white;text-align:center;font-size:13px;cursor:pointer;transition:all 0.2s;font-family:'Noto Sans JP',sans-serif;}
+.weather-btn .emoji{display:block;font-size:22px;margin-bottom:2px;}
+.weather-btn.selected{border-color:var(--primary);background:#eff6ff;color:var(--primary);font-weight:600;}
+.tag{display:inline-flex;align-items:center;gap:4px;background:var(--primary);color:white;padding:6px 12px;border-radius:99px;font-size:13px;font-weight:600;}
+.tag-x{cursor:pointer;font-size:18px;line-height:1;margin-left:2px;}
+.tags-area{display:flex;flex-wrap:wrap;gap:6px;min-height:20px;margin-top:8px;}
+#signatureCanvas{width:100%;height:160px;border:2px dashed var(--border);border-radius:8px;background:#fafafa;touch-action:none;cursor:crosshair;display:block;}
+#signatureCanvas.signed{border-color:var(--success);border-style:solid;}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;font-size:16px;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-primary{background:var(--primary);color:white;}
+.btn-secondary{background:white;color:var(--text);border:1.5px solid var(--border);font-size:14px;padding:10px;}
+.btn-success{background:var(--success);color:white;}
+.btn-accent{background:var(--accent);color:white;}
+.page{display:none;}
+.page.active{display:block;}
+.confirm-row{display:flex;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;}
+.confirm-row:last-child{border-bottom:none;}
+.confirm-label{color:var(--text-sub);width:110px;flex-shrink:0;font-size:13px;}
+.confirm-value{font-weight:500;flex:1;}
+.complete-icon{font-size:64px;text-align:center;margin:20px 0 10px;}
+.complete-title{text-align:center;font-size:22px;font-weight:700;margin-bottom:8px;}
+.complete-sub{text-align:center;color:var(--text-sub);font-size:14px;margin-bottom:24px;}
+.sig-preview{width:100%;height:80px;object-fit:contain;border:1px solid var(--border);border-radius:8px;background:white;}
+.other-input-row{display:none;gap:8px;margin-top:8px;}
+.other-input-row input{flex:1;}
+.other-input-row button{padding:10px 16px;background:var(--primary);color:white;border:none;border-radius:8px;font-size:14px;font-family:'Noto Sans JP',sans-serif;white-space:nowrap;cursor:pointer;}
+.length-display{font-size:24px;font-weight:700;color:var(--primary);min-width:60px;text-align:center;}
+input[type=range]{flex:1;height:6px;accent-color:var(--primary);}
 </style>
 </head>
 <body>
-
 <header>
-  <span class="icon">🏗️</span>
+  <img src="http://www.motoe.jp/files/libs/244/pw/202108110832024525.jpg" style="height:44px;width:auto;" onerror="this.style.display='none'">
   <div>
-    <h1>作業日報</h1>
-    <div class="company">建設現場管理システム</div>
+    <h1>作業証明書</h1>
+    <div class="company">株式会社 元栄組</div>
+  </div>
+  <div class="tel-info">
+    <div>千葉県市原市五井金杉1-41-2</div>
+    <div>TEL: 0436-21-2311</div>
   </div>
 </header>
-
 <div class="steps">
-  <div class="step active" id="step1">① 日報入力</div>
+  <div class="step active" id="step1">① 入力</div>
   <div class="step" id="step2">② 確認</div>
   <div class="step" id="step3">③ 署名</div>
   <div class="step" id="step4">④ 完了</div>
 </div>
-
 <main>
-
-  <!-- ページ1: 入力 -->
-  <div class="page active" id="page1">
-
-    <div class="card">
-      <div class="card-title">📋 基本情報</div>
-
-      <div class="row-2">
-        <div class="form-group">
-          <label>日付 *</label>
-          <input type="date" id="date" required>
-        </div>
-        <div class="form-group">
-          <label>天気 *</label>
-          <div class="weather-group" id="weatherGroup">
-            <button class="weather-btn" onclick="selectWeather('晴れ',this)"><span class="emoji">☀️</span>晴れ</button>
-            <button class="weather-btn" onclick="selectWeather('曇り',this)"><span class="emoji">☁️</span>曇り</button>
-            <button class="weather-btn" onclick="selectWeather('雨',this)"><span class="emoji">🌧️</span>雨</button>
-            <button class="weather-btn" onclick="selectWeather('雪',this)"><span class="emoji">❄️</span>雪</button>
-          </div>
+<div class="page active" id="page1">
+  <div class="card">
+    <div class="card-title">📋 基本情報</div>
+    <div class="row-2">
+      <div class="form-group">
+        <label>日付 *</label>
+        <input type="date" id="date">
+      </div>
+      <div class="form-group">
+        <label>天気 *</label>
+        <div class="weather-group">
+          <button class="weather-btn" onclick="selWeather('晴れ',this)"><span class="emoji">☀️</span>晴れ</button>
+          <button class="weather-btn" onclick="selWeather('曇り',this)"><span class="emoji">☁️</span>曇り</button>
+          <button class="weather-btn" onclick="selWeather('雨',this)"><span class="emoji">🌧️</span>雨</button>
+          <button class="weather-btn" onclick="selWeather('雪',this)"><span class="emoji">❄️</span>雪</button>
         </div>
       </div>
-
-      <div class="form-group">
-        <label>作業員名 *</label>
-        <input type="text" id="workerName" placeholder="例：山田 太郎" required>
-      </div>
-
-      <div class="form-group">
-        <label>現場名 *</label>
-        <input type="text" id="siteName" placeholder="例：市原市姉崎町 〇〇工事" required>
+    </div>
+    <div class="form-group">
+      <label>職長名 *</label>
+      <select id="foreman" onchange="handleForeman(this)" style="font-size:16px;">
+        <option value="">-- 選択してください --</option>
+        <option>元栄洋一郎</option><option>川連南斗</option><option>重村正人</option>
+        <option>中村宏明</option><option>白井男也</option><option>白井大也</option>
+        <option>碇谷栄治路</option><option>佐藤賢一郎</option><option>早川和弘</option>
+        <option value="__other__">その他（手動入力）</option>
+      </select>
+      <input type="hidden" id="foremanName">
+      <div id="foremanOther" style="display:none;margin-top:8px;">
+        <input type="text" id="foremanOtherInput" placeholder="職長名を入力" oninput="document.getElementById('foremanName').value=this.value">
       </div>
     </div>
-
-    <div class="card">
-      <div class="card-title">⚒️ 作業内容</div>
-
-      <div class="form-group">
-        <label>作業内容 *</label>
-        <textarea id="workContent" placeholder="例：SP引き抜き 3本 L:1.75m 67本" required></textarea>
-      </div>
-
-      <div class="row-2">
-        <div class="form-group">
-          <label>開始時間 *</label>
-          <input type="time" id="startTime" required>
-        </div>
-        <div class="form-group">
-          <label>終了時間 *</label>
-          <input type="time" id="endTime" required>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>作業員数</label>
-        <input type="number" id="workerCount" placeholder="例：3" min="1" max="100">
-      </div>
-
-      <div class="form-group">
-        <label>使用機械・器具</label>
-        <input type="text" id="machinery" placeholder="例：キャタピラー25tクレーン">
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">📝 備考</div>
-      <div class="form-group">
-        <textarea id="notes" placeholder="特記事項があれば入力してください" style="min-height:60px"></textarea>
-      </div>
-    </div>
-
-    <button class="btn btn-primary" onclick="goToConfirm()">
-      確認画面へ進む →
-    </button>
-  </div>
-
-  <!-- ページ2: 確認 -->
-  <div class="page" id="page2">
-    <div class="card">
-      <div class="card-title">📋 入力内容の確認</div>
-      <div id="confirmContent"></div>
-    </div>
-
-    <button class="btn btn-primary" onclick="goToSign()" style="margin-bottom:10px">
-      監督に署名をもらう ✍️
-    </button>
-    <button class="btn btn-secondary" onclick="goBack(1)">
-      ← 修正する
-    </button>
-  </div>
-
-  <!-- ページ3: 署名 -->
-  <div class="page" id="page3">
-    <div class="card">
-      <div class="card-title">✍️ 監督署名<span class="badge">監督の方へ</span></div>
-      <p style="font-size:13px;color:var(--text-sub);margin-bottom:12px;">
-        作業内容を確認の上、下の枠内に署名してください。
-      </p>
-      <canvas id="signatureCanvas"></canvas>
-      <div class="sig-hint">↑ 指またはペンで署名してください</div>
-      <div class="sig-actions">
-        <button class="btn btn-secondary" onclick="clearSignature()" style="flex:1">
-          クリア
-        </button>
-      </div>
-    </div>
-
-    <button class="btn btn-success" onclick="complete()" style="margin-bottom:10px">
-      ✅ 署名完了・日報を保存
-    </button>
-    <button class="btn btn-secondary" onclick="goBack(2)">
-      ← 戻る
-    </button>
-  </div>
-
-  <!-- ページ4: 完了 -->
-  <div class="page" id="page4">
-    <div class="card">
-      <div class="complete-icon">✅</div>
-      <div class="complete-title">日報が完成しました！</div>
-      <div class="complete-sub" id="completeSub"></div>
-
-      <div id="sigPreviewArea" style="margin-bottom:16px"></div>
-
-      <button class="btn btn-accent" onclick="downloadReport()" style="margin-bottom:10px">
-        📥 PDFで保存・共有
-      </button>
-      <button class="btn btn-primary" onclick="shareToLine()" style="margin-bottom:10px">
-        📤 LINEワークスで送信
-      </button>
-      <button class="btn btn-secondary" onclick="newReport()">
-        ＋ 新しい日報を作成
-      </button>
+    <div class="form-group">
+      <label>作業現場名 *</label>
+      <input type="text" id="siteName" placeholder="例：市原市姉崎町 〇〇工事">
     </div>
   </div>
-
+  <div class="card">
+    <div class="card-title">⚒️ 作業内容</div>
+    <div class="form-group">
+      <label>工法 *</label>
+      <div class="weather-group">
+        <button class="weather-btn" onclick="selMethod('単独圧入',this)">単独圧入</button>
+        <button class="weather-btn" onclick="selMethod('ジェット併用圧入',this)">ジェット<br>併用圧入</button>
+        <button class="weather-btn" onclick="selMethod('オーガ併用圧入',this)">オーガ<br>併用圧入</button>
+        <button class="weather-btn" onclick="selMethod('バイブロ打設',this)">バイブロ<br>打設</button>
+        <button class="weather-btn" onclick="selMethod('バイブロ引き抜き',this)">バイブロ<br>引き抜き</button>
+        <button class="weather-btn" onclick="selMethod('パイラー引き抜き',this)">パイラー<br>引き抜き</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>型 *</label>
+      <select id="typeSelect" onchange="handleType(this)" style="font-size:16px;">
+        <option value="">-- 選択してください --</option>
+        <option value="SP400">SP 400</option>
+        <option value="SP500">SP 500</option>
+        <option value="NSP600">NSP 600</option>
+        <option value="SPハット型">SP ハット型</option>
+        <option value="ZERO">ZERO</option>
+        <option value="その他">その他</option>
+      </select>
+    </div>
+    <div class="form-group" id="subTypeArea" style="display:none;">
+      <label id="subTypeLabel">規格</label>
+      <div class="weather-group" id="subTypeGroup"></div>
+    </div>
+    <div class="form-group">
+      <label>長さ L(m) *</label>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <input type="range" id="lengthSlider" min="2" max="100" value="20" step="1" oninput="updateLength()">
+        <span class="length-display" id="lengthVal">10.0</span>
+        <span style="font-size:14px;color:var(--text-sub);">m</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-sub);margin-top:4px;"><span>1.0m</span><span>25.0m</span><span>50.0m</span></div>
+    </div>
+    <div class="form-group">
+      <label>枚数・本数 *</label>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <input type="range" id="countSlider" min="1" max="200" value="1" step="1" oninput="updateCount()">
+        <span class="length-display" id="countVal">1</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-sub);margin-top:4px;"><span>1</span><span>100</span><span>200</span></div>
+      <div style="display:flex;gap:10px;margin-top:10px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:500;cursor:pointer;"><input type="radio" name="countUnit" value="枚" onchange="updateWork()" checked style="width:18px;height:18px;accent-color:var(--primary);"> 枚</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:15px;font-weight:500;cursor:pointer;"><input type="radio" name="countUnit" value="本" onchange="updateWork()" style="width:18px;height:18px;accent-color:var(--primary);"> 本</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>作業内容（自動生成）</label>
+      <div id="workPreview" style="background:#f0f4ff;border:1.5px solid var(--primary);border-radius:8px;padding:12px;font-size:15px;font-weight:600;color:var(--primary);min-height:48px;">工法・型・長さを選択すると自動生成されます</div>
+      <input type="hidden" id="workContent">
+    </div>
+    <div class="row-2">
+      <div class="form-group"><label>開始時間 *</label><input type="time" id="startTime" value="08:00"></div>
+      <div class="form-group"><label>終了時間 *</label><input type="time" id="endTime" value="17:00"></div>
+    </div>
+    <div class="form-group">
+      <label>作業者名（複数選択可）</label>
+      <select id="workerSelect" onchange="addWorker(this)" style="font-size:16px;">
+        <option value="">-- タップして追加 --</option>
+        <option>アリ</option><option>ディオ</option><option>ディキ</option>
+        <option>ヌルハミド</option><option>ヌルロヒム</option><option>ロマダニ</option>
+        <option>ズキルマン</option><option>カリド</option><option>バフティアル</option>
+        <option>ワフユ</option><option>大上マサシ</option>
+        <option value="__other__">その他（手動入力）</option>
+      </select>
+      <div class="other-input-row" id="otherWorkerRow">
+        <input type="text" id="otherWorkerInput" placeholder="名前を入力">
+        <button onclick="addOtherWorker()">追加</button>
+      </div>
+      <div class="tags-area" id="workerTags"></div>
+      <input type="hidden" id="workerNames">
+    </div>
+    <div class="form-group"><label>作業員数</label><input type="number" id="workerCount" placeholder="例：3" min="1" max="100" inputmode="numeric"></div>
+    <div class="form-group">
+      <label>オペレーター名</label>
+      <select id="operatorSelect" onchange="handleOperator(this)" style="font-size:16px;">
+        <option value="">-- 選択してください --</option>
+        <option value="坂本">坂本</option><option value="丸">丸</option>
+        <option value="大上啓一">大上啓一</option><option value="佐川道夫">佐川道夫</option>
+        <option value="__other__">その他（手動入力）</option>
+      </select>
+      <input type="hidden" id="operatorName">
+      <div id="operatorOther" style="display:none;margin-top:8px;">
+        <input type="text" id="operatorOtherInput" placeholder="オペレーター名を入力" oninput="document.getElementById('operatorName').value=this.value">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>使用クレーン</label>
+      <select id="craneSelect" onchange="handleCrane(this)" style="font-size:16px;">
+        <option value="">-- 選択してください --</option>
+        <option value="25tラフタクレーン">25tラフタクレーン</option>
+        <option value="35tラフタクレーン">35tラフタクレーン</option>
+        <option value="50tラフタクレーン">50tラフタクレーン</option>
+        <option value="50tテレスコクレーン">50tテレスコクレーン</option>
+        <option value="75tテレスコクレーン">75tテレスコクレーン</option>
+        <option value="70tクローラークレーン">70tクローラークレーン</option>
+        <option value="__other__">その他（手動入力）</option>
+      </select>
+      <input type="hidden" id="craneName">
+      <div id="craneOther" style="display:none;margin-top:8px;">
+        <input type="text" id="craneOtherInput" placeholder="クレーン名を入力" oninput="document.getElementById('craneName').value=this.value">
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📝 備考</div>
+    <div class="form-group"><textarea id="notes" placeholder="特記事項があれば入力してください" style="min-height:60px;"></textarea></div>
+  </div>
+  <button class="btn btn-primary" onclick="goConfirm()">確認画面へ進む →</button>
+</div>
+<div class="page" id="page2">
+  <div class="card">
+    <div class="card-title">📋 入力内容の確認</div>
+    <div id="confirmContent"></div>
+  </div>
+  <button class="btn btn-primary" onclick="goSign()" style="margin-bottom:10px;">監督に署名をもらう ✍️</button>
+  <button class="btn btn-secondary" onclick="showPage(1)">← 修正する</button>
+</div>
+<div class="page" id="page3">
+  <div class="card">
+    <div class="card-title">✍️ 監督署名</div>
+    <p style="font-size:13px;color:var(--text-sub);margin-bottom:12px;">作業内容を確認の上、下の枠内に署名してください。</p>
+    <canvas id="signatureCanvas"></canvas>
+    <p style="font-size:12px;color:var(--text-sub);text-align:center;margin-top:6px;">↑ 指で署名してください</p>
+    <button class="btn btn-secondary" onclick="clearSig()" style="margin-top:8px;">クリア</button>
+  </div>
+  <button class="btn btn-success" onclick="complete()" style="margin-bottom:10px;">✅ 署名完了・保存</button>
+  <button class="btn btn-secondary" onclick="showPage(2)">← 戻る</button>
+</div>
+<div class="page" id="page4">
+  <div class="card">
+    <div class="complete-icon">✅</div>
+    <div class="complete-title">作業証明書が完成しました！</div>
+    <div class="complete-sub" id="completeSub"></div>
+    <div id="sigPreviewArea" style="margin-bottom:16px;"></div>
+    <button class="btn btn-accent" onclick="downloadReport()" style="margin-bottom:10px;">📥 PDFで保存・共有</button>
+    <button class="btn btn-primary" onclick="shareToLine()" style="margin-bottom:10px;">📤 LINEワークスで送信</button>
+    <button class="btn btn-secondary" onclick="newReport()">＋ 新しい証明書を作成</button>
+  </div>
+</div>
 </main>
-
 <script>
-let weather = '';
-let signatureData = '';
-let reportData = {};
-
-// 今日の日付をデフォルト設定
-document.getElementById('date').value = new Date().toISOString().split('T')[0];
-
-function selectWeather(w, btn) {
-  weather = w;
-  document.querySelectorAll('.weather-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-}
-
-function goToConfirm() {
-  const required = ['date','workerName','siteName','workContent','startTime','endTime'];
-  for (let id of required) {
-    if (!document.getElementById(id).value) {
-      alert('必須項目を入力してください');
-      document.getElementById(id).focus();
-      return;
-    }
-  }
-  if (!weather) { alert('天気を選択してください'); return; }
-
-  reportData = {
-    date: document.getElementById('date').value,
-    weather,
-    workerName: document.getElementById('workerName').value,
-    siteName: document.getElementById('siteName').value,
-    workContent: document.getElementById('workContent').value,
-    startTime: document.getElementById('startTime').value,
-    endTime: document.getElementById('endTime').value,
-    workerCount: document.getElementById('workerCount').value || '—',
-    machinery: document.getElementById('machinery').value || '—',
-    notes: document.getElementById('notes').value || '—',
+let weather='',workMethod='',workSubType='',workerList=[],sigData='',reportData={};
+const subTypes={'SP400':['2型','3型','4型'],'SP500':['5L','6L'],'NSP600':['2W','3W','4W'],'SPハット型':['10H','25H','45H','50H'],'ZERO':[],'その他':['H鋼300','H鋼400']};
+document.getElementById('date').value=new Date().toISOString().split('T')[0];
+function selWeather(w,btn){weather=w;document.querySelectorAll('.weather-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
+function selMethod(m,btn){workMethod=m;document.querySelectorAll('.weather-group .weather-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');updateWork();}
+function handleForeman(sel){if(sel.value==='__other__'){document.getElementById('foremanOther').style.display='block';document.getElementById('foremanName').value='';}else{document.getElementById('foremanOther').style.display='none';document.getElementById('foremanName').value=sel.value;}}
+function handleType(sel){const t=sel.value;workSubType='';const subs=subTypes[t]||[];const area=document.getElementById('subTypeArea');const group=document.getElementById('subTypeGroup');if(subs.length>0){area.style.display='block';document.getElementById('subTypeLabel').textContent=t+' 規格';group.innerHTML=subs.map(s=>'<button class="weather-btn" onclick="selSub(\''+s+'\',this)">'+s+'</button>').join('');}else{area.style.display='none';updateWork();}}
+function selSub(s,btn){workSubType=s;document.querySelectorAll('#subTypeGroup .weather-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');updateWork();}
+function updateLength(){document.getElementById('lengthVal').textContent=(document.getElementById('lengthSlider').value/2).toFixed(1);updateWork();}
+function updateCount(){document.getElementById('countVal').textContent=document.getElementById('countSlider').value;updateWork();}
+function updateWork(){const t=document.getElementById('typeSelect').value;const len=(document.getElementById('lengthSlider').value/2).toFixed(1);const count=document.getElementById('countSlider').value;const unitEl=document.querySelector('input[name="countUnit"]:checked');const unit=unitEl?unitEl.value:'枚';let parts=[];if(workMethod)parts.push(workMethod);if(t){let ts=t;if(workSubType)ts+=' '+workSubType;parts.push(ts);}parts.push('L='+len+'m');parts.push(count+unit);const text=parts.join(' / ');document.getElementById('workPreview').textContent=text||'工法・型・長さを選択すると自動生成されます';document.getElementById('workContent').value=text;}
+function addWorker(sel){const val=sel.value;sel.value='';if(!val)return;if(val==='__other__'){document.getElementById('otherWorkerRow').style.display='flex';return;}if(!workerList.includes(val)){workerList.push(val);renderTags();}}
+function addOtherWorker(){const input=document.getElementById('otherWorkerInput');const val=input.value.trim();if(val&&!workerList.includes(val)){workerList.push(val);renderTags();input.value='';document.getElementById('otherWorkerRow').style.display='none';}}
+function removeWorker(name){workerList=workerList.filter(n=>n!==name);renderTags();}
+function renderTags(){const area=document.getElementById('workerTags');area.innerHTML=workerList.map(name=>'<span class="tag">'+name+'<span class="tag-x" onclick="removeWorker(\''+name+'\')">×</span></span>').join('');document.getElementById('workerNames').value=workerList.join('、');}
+function handleOperator(sel){if(sel.value==='__other__'){document.getElementById('operatorOther').style.display='block';document.getElementById('operatorName').value='';}else{document.getElementById('operatorOther').style.display='none';document.getElementById('operatorName').value=sel.value;}}
+function handleCrane(sel){if(sel.value==='__other__'){document.getElementById('craneOther').style.display='block';document.getElementById('craneName').value='';}else{document.getElementById('craneOther').style.display='none';document.getElementById('craneName').value=sel.value;}}
+function goConfirm(){
+  if(!document.getElementById('date').value){alert('日付を入力してください');return;}
+  if(!weather){alert('天気を選択してください');return;}
+  const fn=document.getElementById('foremanName').value;
+  if(!fn){alert('職長名を選択してください');return;}
+  if(!document.getElementById('siteName').value){alert('作業現場名を入力してください');return;}
+  if(!document.getElementById('startTime').value){alert('開始時間を入力してください');return;}
+  if(!document.getElementById('endTime').value){alert('終了時間を入力してください');return;}
+  reportData={
+    date:document.getElementById('date').value,
+    weather:weather,
+    foremanName:fn,
+    siteName:document.getElementById('siteName').value,
+    workContent:document.getElementById('workContent').value||'（未選択）',
+    startTime:document.getElementById('startTime').value,
+    endTime:document.getElementById('endTime').value,
+    workerNames:document.getElementById('workerNames').value||'—',
+    workerCount:document.getElementById('workerCount').value||'—',
+    operatorName:document.getElementById('operatorName').value||'—',
+    craneName:document.getElementById('craneName').value||'—',
+    notes:document.getElementById('notes').value||'—',
   };
-
-  const html = `
-    <div class="confirm-row"><span class="confirm-label">日付</span><span class="confirm-value">${reportData.date}</span></div>
-    <div class="confirm-row"><span class="confirm-label">天気</span><span class="confirm-value">${reportData.weather}</span></div>
-    <div class="confirm-row"><span class="confirm-label">作業員名</span><span class="confirm-value">${reportData.workerName}</span></div>
-    <div class="confirm-row"><span class="confirm-label">現場名</span><span class="confirm-value">${reportData.siteName}</span></div>
-    <div class="confirm-row"><span class="confirm-label">作業内容</span><span class="confirm-value">${reportData.workContent}</span></div>
-    <div class="confirm-row"><span class="confirm-label">作業時間</span><span class="confirm-value">${reportData.startTime} 〜 ${reportData.endTime}</span></div>
-    <div class="confirm-row"><span class="confirm-label">作業員数</span><span class="confirm-value">${reportData.workerCount}名</span></div>
-    <div class="confirm-row"><span class="confirm-label">使用機械</span><span class="confirm-value">${reportData.machinery}</span></div>
-    <div class="confirm-row"><span class="confirm-label">備考</span><span class="confirm-value">${reportData.notes}</span></div>
-  `;
-  document.getElementById('confirmContent').innerHTML = html;
+  document.getElementById('confirmContent').innerHTML=[
+    ['日付',reportData.date],['天気',reportData.weather],['職長名',reportData.foremanName],
+    ['作業現場名',reportData.siteName],['作業内容',reportData.workContent],
+    ['作業時間',reportData.startTime+'〜'+reportData.endTime],
+    ['作業者名',reportData.workerNames],['作業員数',reportData.workerCount+'名'],
+    ['オペレーター',reportData.operatorName],['使用クレーン',reportData.craneName],
+    ['備考',reportData.notes],
+  ].map(([l,v])=>'<div class="confirm-row"><span class="confirm-label">'+l+'</span><span class="confirm-value">'+v+'</span></div>').join('');
   showPage(2);
 }
-
-function goToSign() {
-  showPage(3);
-  initSignature();
-}
-
-function goBack(page) { showPage(page); }
-
-function showPage(n) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page' + n).classList.add('active');
-  document.querySelectorAll('.step').forEach((s,i) => {
-    s.classList.toggle('active', i < n);
-  });
-  window.scrollTo(0,0);
-}
-
-// 署名機能
-let canvas, ctx, drawing = false;
-
-function initSignature() {
-  canvas = document.getElementById('signatureCanvas');
-  ctx = canvas.getContext('2d');
-  canvas.width = canvas.offsetWidth;
-  canvas.height = 160;
-  ctx.strokeStyle = '#1a1a1a';
-  ctx.lineWidth = 2.5;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-
-  canvas.addEventListener('touchstart', startDraw, {passive:false});
-  canvas.addEventListener('touchmove', draw, {passive:false});
-  canvas.addEventListener('touchend', stopDraw);
-  canvas.addEventListener('mousedown', startDrawMouse);
-  canvas.addEventListener('mousemove', drawMouse);
-  canvas.addEventListener('mouseup', stopDraw);
-}
-
-function getPos(e, canvas) {
-  const rect = canvas.getBoundingClientRect();
-  const scaleX = canvas.width / rect.width;
-  if (e.touches) {
-    return {
-      x: (e.touches[0].clientX - rect.left) * scaleX,
-      y: (e.touches[0].clientY - rect.top) * scaleX
-    };
-  }
-  return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleX };
-}
-
-function startDraw(e) {
-  e.preventDefault();
-  drawing = true;
-  const pos = getPos(e, canvas);
-  ctx.beginPath();
-  ctx.moveTo(pos.x, pos.y);
-}
-function draw(e) {
-  e.preventDefault();
-  if (!drawing) return;
-  const pos = getPos(e, canvas);
-  ctx.lineTo(pos.x, pos.y);
-  ctx.stroke();
-  canvas.classList.add('signed');
-}
-function stopDraw() { drawing = false; }
-function startDrawMouse(e) { drawing = true; const pos = getPos(e, canvas); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); }
-function drawMouse(e) { if (!drawing) return; const pos = getPos(e, canvas); ctx.lineTo(pos.x, pos.y); ctx.stroke(); canvas.classList.add('signed'); }
-
-function clearSignature() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  canvas.classList.remove('signed');
-}
-
-function complete() {
-  signatureData = canvas.toDataURL('image/png');
-  const isEmpty = !canvas.classList.contains('signed');
-  if (isEmpty && !confirm('署名がありません。このまま完了しますか？')) return;
-
-  document.getElementById('completeSub').textContent =
-    `${reportData.date} / ${reportData.siteName} / ${reportData.workerName}`;
-
-  if (signatureData && canvas.classList.contains('signed')) {
-    document.getElementById('sigPreviewArea').innerHTML =
-      `<p style="font-size:12px;color:var(--text-sub);margin-bottom:4px;">監督署名：</p>
-       <img src="${signatureData}" class="sig-preview">`;
-  }
-
-  showPage(4);
-}
-
-function downloadReport() {
-  const d = reportData;
-  const sigHtml = signatureData && canvas.classList.contains('signed')
-    ? `<img src="${signatureData}" style="width:200px;height:60px;object-fit:contain;border:1px solid #ccc;border-radius:4px;">`
-    : '<span style="color:#999">（署名なし）</span>';
-
-  const html = `<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8">
-  <style>
-    body{font-family:'Noto Sans JP',sans-serif;padding:30px;max-width:700px;margin:0 auto;color:#111;}
-    h1{font-size:22px;text-align:center;border-bottom:2px solid #1a56db;padding-bottom:10px;margin-bottom:20px;color:#1a56db;}
-    table{width:100%;border-collapse:collapse;margin-bottom:20px;}
-    td{padding:10px 12px;border:1px solid #ddd;font-size:14px;}
-    td:first-child{background:#f0f4ff;font-weight:600;width:130px;color:#1a56db;}
-    .sig-area{border:1px solid #ddd;padding:16px;border-radius:8px;margin-top:20px;}
-    .sig-title{font-size:13px;color:#666;margin-bottom:8px;}
-    .footer{text-align:center;margin-top:30px;font-size:11px;color:#999;}
-  </style></head><body>
-  <h1>🏗️ 作業日報</h1>
-  <table>
-    <tr><td>日付</td><td>${d.date}</td></tr>
-    <tr><td>天気</td><td>${d.weather}</td></tr>
-    <tr><td>作業員名</td><td>${d.workerName}</td></tr>
-    <tr><td>現場名</td><td>${d.siteName}</td></tr>
-    <tr><td>作業内容</td><td>${d.workContent}</td></tr>
-    <tr><td>作業時間</td><td>${d.startTime} 〜 ${d.endTime}</td></tr>
-    <tr><td>作業員数</td><td>${d.workerCount}名</td></tr>
-    <tr><td>使用機械</td><td>${d.machinery}</td></tr>
-    <tr><td>備考</td><td>${d.notes}</td></tr>
-  </table>
-  <div class="sig-area">
-    <div class="sig-title">監督署名：</div>
-    ${sigHtml}
-  </div>
-  <div class="footer">建設現場管理システム / 出力日時：${new Date().toLocaleString('ja-JP')}</div>
-  </body></html>`;
-
-  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `日報_${d.date}_${d.workerName}.html`;
-  a.click();
-  URL.revokeObjectURL(url);
-
-  setTimeout(() => alert('ダウンロードしました！\nブラウザの印刷機能でPDF保存できます。'), 500);
-}
-
-function shareToLine() {
-  const d = reportData;
-  const text = `【作業日報】\n日付：${d.date}\n現場：${d.siteName}\n作業員：${d.workerName}\n作業内容：${d.workContent}\n時間：${d.startTime}〜${d.endTime}\n天気：${d.weather}`;
-  const url = `https://line.me/R/share?text=${encodeURIComponent(text)}`;
-  window.open(url, '_blank');
-}
-
-function newReport() {
-  document.getElementById('workerName').value = '';
-  document.getElementById('siteName').value = '';
-  document.getElementById('workContent').value = '';
-  document.getElementById('startTime').value = '';
-  document.getElementById('endTime').value = '';
-  document.getElementById('workerCount').value = '';
-  document.getElementById('machinery').value = '';
-  document.getElementById('notes').value = '';
-  document.getElementById('date').value = new Date().toISOString().split('T')[0];
-  document.querySelectorAll('.weather-btn').forEach(b => b.classList.remove('selected'));
-  weather = '';
-  document.getElementById('sigPreviewArea').innerHTML = '';
-  showPage(1);
-}
+let canvas,ctx,drawing=false;
+function goSign(){showPage(3);canvas=document.getElementById('signatureCanvas');ctx=canvas.getContext('2d');canvas.width=canvas.offsetWidth;canvas.height=160;ctx.strokeStyle='#1a1a1a';ctx.lineWidth=2.5;ctx.lineCap='round';ctx.lineJoin='round';
+canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;const p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);},{passive:false});
+canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const p=getPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();canvas.classList.add('signed');},{passive:false});
+canvas.addEventListener('touchend',()=>drawing=false);
+canvas.addEventListener('mousedown',e=>{drawing=true;const p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);});
+canvas.addEventListener('mousemove',e=>{if(!drawing)return;const p=getPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();canvas.classList.add('signed');});
+canvas.addEventListener('mouseup',()=>drawing=false);}
+function getPos(e){const rect=canvas.getBoundingClientRect();const scale=canvas.width/rect.width;if(e.touches)return{x:(e.touches[0].clientX-rect.left)*scale,y:(e.touches[0].clientY-rect.top)*scale};return{x:(e.clientX-rect.left)*scale,y:(e.clientY-rect.top)*scale};}
+function clearSig(){ctx.clearRect(0,0,canvas.width,canvas.height);canvas.classList.remove('signed');}
+function complete(){sigData=canvas.toDataURL('image/png');document.getElementById('completeSub').textContent=reportData.date+' / '+reportData.siteName+' / '+reportData.foremanName;if(canvas.classList.contains('signed')){document.getElementById('sigPreviewArea').innerHTML='<p style="font-size:12px;color:var(--text-sub);margin-bottom:4px;">監督署名：</p><img src="'+sigData+'" class="sig-preview">';}showPage(4);}
+function downloadReport(){const d=reportData;const sigHtml=sigData&&canvas.classList.contains('signed')?'<img src="'+sigData+'" style="width:200px;height:60px;object-fit:contain;border:1px solid #ccc;border-radius:4px;">':'<span style="color:#999">（署名なし）</span>';
+const html='<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><style>body{font-family:sans-serif;padding:30px;max-width:700px;margin:0 auto;}h1{font-size:20px;text-align:center;border-bottom:2px solid #1a56db;padding-bottom:10px;margin-bottom:20px;color:#1a56db;}table{width:100%;border-collapse:collapse;margin-bottom:20px;}td{padding:10px 12px;border:1px solid #ddd;font-size:14px;}td:first-child{background:#f0f4ff;font-weight:600;width:130px;color:#1a56db;}.sig{border:1px solid #ddd;padding:16px;border-radius:8px;}.footer{text-align:center;margin-top:30px;font-size:11px;color:#999;}</style></head><body><h1>🏗️ 作業証明書</h1><table><tr><td>日付</td><td>'+d.date+'</td></tr><tr><td>天気</td><td>'+d.weather+'</td></tr><tr><td>職長名</td><td>'+d.foremanName+'</td></tr><tr><td>作業現場名</td><td>'+d.siteName+'</td></tr><tr><td>作業内容</td><td>'+d.workContent+'</td></tr><tr><td>作業時間</td><td>'+d.startTime+'〜'+d.endTime+'</td></tr><tr><td>作業者名</td><td>'+d.workerNames+'</td></tr><tr><td>作業員数</td><td>'+d.workerCount+'名</td></tr><tr><td>オペレーター</td><td>'+d.operatorName+'</td></tr><tr><td>使用クレーン</td><td>'+d.craneName+'</td></tr><tr><td>備考</td><td>'+d.notes+'</td></tr></table><div class="sig"><p style="font-size:13px;color:#666;margin-bottom:8px;">監督署名：</p>'+sigHtml+'</div><div class="footer">株式会社 元栄組 | 千葉県市原市五井金杉1-41-2 | TEL:0436-21-2311 / '+new Date().toLocaleString('ja-JP')+'</div></body></html>';
+const blob=new Blob([html],{type:'text/html;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='作業証明書_'+d.date+'_'+d.foremanName+'.html';a.click();setTimeout(()=>alert('ダウンロードしました！\nブラウザの印刷からPDF保存できます。'),500);}
+function shareToLine(){const d=reportData;const text='【作業証明書】\n日付：'+d.date+'\n現場：'+d.siteName+'\n職長：'+d.foremanName+'\n作業内容：'+d.workContent+'\n時間：'+d.startTime+'〜'+d.endTime+'\n天気：'+d.weather;window.open('https://line.me/R/share?text='+encodeURIComponent(text),'_blank');}
+function newReport(){weather='';workMethod='';workSubType='';workerList=[];sigData='';reportData={};
+document.getElementById('date').value=new Date().toISOString().split('T')[0];
+document.getElementById('foreman').value='';document.getElementById('foremanName').value='';
+document.getElementById('foremanOther').style.display='none';document.getElementById('foremanOtherInput').value='';
+document.getElementById('siteName').value='';document.getElementById('typeSelect').value='';
+document.getElementById('subTypeArea').style.display='none';
+document.getElementById('lengthSlider').value=20;document.getElementById('lengthVal').textContent='10.0';
+document.getElementById('countSlider').value=1;document.getElementById('countVal').textContent='1';
+document.getElementById('workPreview').textContent='工法・型・長さを選択すると自動生成されます';
+document.getElementById('workContent').value='';
+document.getElementById('startTime').value='08:00';document.getElementById('endTime').value='17:00';
+document.getElementById('workerSelect').value='';document.getElementById('workerTags').innerHTML='';
+document.getElementById('workerNames').value='';document.getElementById('otherWorkerRow').style.display='none';
+document.getElementById('otherWorkerInput').value='';document.getElementById('workerCount').value='';
+document.getElementById('operatorSelect').value='';document.getElementById('operatorName').value='';
+document.getElementById('operatorOther').style.display='none';document.getElementById('operatorOtherInput').value='';
+document.getElementById('craneSelect').value='';document.getElementById('craneName').value='';
+document.getElementById('craneOther').style.display='none';document.getElementById('craneOtherInput').value='';
+document.getElementById('notes').value='';
+document.querySelectorAll('.weather-btn').forEach(b=>b.classList.remove('selected'));
+const firstUnit=document.querySelector('input[name="countUnit"]');if(firstUnit)firstUnit.checked=true;
+showPage(1);}
+function showPage(n){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page'+n).classList.add('active');document.querySelectorAll('.step').forEach((s,i)=>s.classList.toggle('active',i<n));window.scrollTo(0,0);}
 </script>
 </body>
 </html>
